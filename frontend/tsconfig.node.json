@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "types": ["cypress", "node"],
+    "esModuleInterop": true,
+  },
+  "include": ["cypress/**/*.ts", "cypress.config.ts"]
+}
