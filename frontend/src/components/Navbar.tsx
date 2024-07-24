@@ -15,9 +15,7 @@ export function Navbar() {
               <img
                 alt={'Codium logo'}
                 width={120}
-                src={
-                  'https://www.codium.team/img/resources/codium-brand-rectangle-black.svg'
-                }
+                src={'/images/codium-brand-rectangle-black.png'}
               />
             </a>
           </div>
