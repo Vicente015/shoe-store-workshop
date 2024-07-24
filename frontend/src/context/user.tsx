@@ -19,10 +19,9 @@ const UserContext = createContext<UserContextValue>({
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const email = window.sessionStorage.getItem('email') || '';
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   const type: 'VIP' | 'register' | 'guest' =
-    window.sessionStorage.getItem('type') || 'guest';
+    (window.sessionStorage.getItem('type') as 'VIP' | 'register' | 'guest') ||
+    'guest';
   const [user, setUser] = useState<UserContextType>({ email, type });
 
   const logIn = (email: string) => {
