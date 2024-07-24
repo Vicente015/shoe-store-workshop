@@ -63,7 +63,8 @@ To implement the discount logic effectively, we need to add a discount block to 
 
 - List all selected shoes ✅
 - Show subtotal prices before discount ✅
-- Show discount Block ❌
+- Show discount banner depend on the user and discount to be applied ✅
+- Show discount block text after subtotal ❌
 - Calculate and display the total price after applying the discount ❌
 
 <hr />
