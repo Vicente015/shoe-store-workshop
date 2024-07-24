@@ -88,7 +88,7 @@ export function HomePage() {
         </div>
       </div>
       <div className='focus:outline-none'>
-        <div className='mx-auto container'>
+        <div className='mx-auto container' id='list'>
           <h2 className='text-4xl font-semibold my-8'>Products</h2>
           <div className='flex flex-wrap items-center w-full'>
             {products.map((p) => {
