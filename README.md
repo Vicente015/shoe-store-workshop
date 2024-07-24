@@ -46,10 +46,11 @@ The shoe store has different discount rules based on the user type and the numbe
 ##### 3. VIP User
 `vip@codium.team:<what-ever>`
 
-- 1 shoe = 10% discount
-- 2 shoes = 15% discount
-- 3 shoes = 25% discount
-- 4 shoes = 25% discount
+- 1 shoe = 5% discount
+- 2 shoes = 10% discount
+- 3 shoes = 20% discount
+- 4 shoes = 20% discount
+- **Bonus 5% extra**
 
 ### Requirements for Cart and Payment Pages
 To implement the discount logic effectively, we need to add a discount block to both the [Cart](/docs/cart-page.png) and [Payment pages](/docs/payment-page.png). The discount should be calculated based on the user's status and the number of shoes selected.
