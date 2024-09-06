@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\PersonalAccessToken;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -46,12 +48,36 @@ class CheckoutTest extends TestCase
     }
 
     #[Test]
-    public function guest_users_get_5_percent_discount_for_1_product(): void
+    public function guest_users_get_0_percent_discount_for_any_products(): void
     {
         Product::factory()->create(['slug' => 'product-1', 'price' => 100.0]);
 
         $response = $this->postJson('/api/checkout', [
-            'price' => 95.00,
+            'price' => 100.00,
+            'products' => ['product-1'],
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    #[Test]
+    public function registered_users_get_2_percent_discount_for_1_product(): void
+    {
+        # TODO: why can't I just create the token and make this work without a login call?
+        $user = User::factory()->create(['password' => 'userPassword']);
+        $token = $this->postJson('/api/auth/login', [
+            'email' => $user->email,
+            'password' => 'userPassword',
+        ])->json('token');
+
+        Product::factory()->create(['slug' => 'product-1', 'price' => 100.0]);
+
+        $response = $this
+            ->withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])
+            ->postJson('/api/checkout', [
+            'price' => 98.00,
             'products' => ['product-1'],
         ]);
 

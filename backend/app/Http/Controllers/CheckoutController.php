@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
@@ -39,11 +40,20 @@ class CheckoutController extends Controller
         return $discounted_price === $submitted_price;
     }
 
-    private function applyDiscount(float $starting_price, int $amount_of_products): float
+    private function applyDiscount(float|int $expected_price, int $amount_of_products)
+    {
+        if (!Auth::check()) {
+            return $expected_price;
+        }
+
+        return $this->applyDiscountForRegisteredUser($expected_price, $amount_of_products);
+    }
+
+    private function applyDiscountForRegisteredUser(float $starting_price, int $amount_of_products): float
     {
         switch ($amount_of_products) {
             case 1:
-                $discount = 0.95;
+                $discount = 0.98;
                 break;
             default:
                 $discount = 1;
