@@ -31,10 +31,24 @@ class CheckoutController extends Controller
         return $products;
     }
 
-    private function validatePrice(float $price, array $products): bool
+    private function validatePrice(float $submitted_price, array $products): bool
     {
         $expected_price = array_sum(array_map(fn ($p) => $p->price, $products));
+        $discounted_price = $this->applyDiscount($expected_price, count($products));
 
-        return $expected_price === $price;
+        return $discounted_price === $submitted_price;
+    }
+
+    private function applyDiscount(float $starting_price, int $amount_of_products): float
+    {
+        switch ($amount_of_products) {
+            case 1:
+                $discount = 0.95;
+                break;
+            default:
+                $discount = 1;
+        }
+
+        return $starting_price * $discount;
     }
 }
