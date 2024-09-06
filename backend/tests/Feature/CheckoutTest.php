@@ -30,4 +30,18 @@ class CheckoutTest extends TestCase
         $response->assertStatus(200);
         $response->assertExactJson(['status' => 'success']);
     }
+
+    #[Test]
+    public function checkout_cart_with_wrong_price(): void
+    {
+        Product::factory()->create(['slug' => 'product-1', 'price' => 20.0]);
+
+        $response = $this->postJson('/api/checkout', [
+            'price' => 5.00,
+            'products' => ['product-1'],
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertExactJson(['error' => 'invalid price']);
+    }
 }
