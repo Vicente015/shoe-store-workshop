@@ -19,10 +19,7 @@ class CheckoutController extends Controller
             ], 400);
         }
 
-        return new JsonResponse([
-            'status' => 'ok',
-            'products' => $products
-        ]);
+        return new JsonResponse(['status' => 'success']);
     }
 
     public function getProductsFromCart(Request $request): array
