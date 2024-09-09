@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class ProductListTest extends TestCase
+class ProductListControllerTest extends TestCase
 {
     use RefreshDatabase;
 
