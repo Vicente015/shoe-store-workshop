@@ -31,7 +31,26 @@ class CheckoutControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertExactJson(['status' => 'success']);
+    }
+
+    #[Test]
+    public function check_order_created_for_anonymous_user(): void
+    {
+        $product_to_purchase = Product::factory()->create(
+            ['slug' => 'product-1', 'price' => 10.0],
+        );
+
+        $this->postJson('/api/checkout', [
+            'price' => 10.00,
+            'products' => ['product-1'],
+        ]);
+
         $this->assertEquals(1, Order::query()->count());
+        $order = Order::all()->first();
+        $this->assertNull($order->user);
+        $this->assertEquals(10.0, $order->price);
+        $this->assertEquals(1, $order->products->count());
+        $this->assertTrue($order->products->first()->is($product_to_purchase));
     }
 
     #[Test]

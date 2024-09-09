@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +20,12 @@ class CheckoutController extends Controller
                 'error' => 'invalid price',
             ], 400);
         }
+
+        $order = Order::create([
+            'user_id' => null,
+            'price' => $price,
+        ]);
+        $order->products()->saveMany($products);
 
         return new JsonResponse(['status' => 'success']);
     }
