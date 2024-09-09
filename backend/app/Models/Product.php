@@ -35,6 +35,13 @@ class Product extends Model
         );
     }
 
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (float) $value,
+        );
+    }
+
     public function order(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'order_products');

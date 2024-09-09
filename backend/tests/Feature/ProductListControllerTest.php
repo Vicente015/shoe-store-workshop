@@ -28,7 +28,7 @@ class ProductListControllerTest extends TestCase
             [
                 'name' => 'Nike Zoom',
                 "slug" => "nike-zoom",
-                'price' => "99.99",
+                'price' => 99.99,
                 'uuid' => "9cf18d94-143f-4906-945b-0567602112fa",
                 'image' => "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=640&auto=format&fit=crop"
             ],

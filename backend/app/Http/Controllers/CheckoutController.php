@@ -43,7 +43,7 @@ class CheckoutController extends Controller
 
     private function validatePrice(float $submitted_price, array $products): bool
     {
-        $price_sum_of_all_products = array_sum(array_map(fn ($p) => $p->price, $products));
+        $price_sum_of_all_products = array_sum(array_map(fn ($p) => (float) $p->price, $products));
         return $price_sum_of_all_products === $submitted_price;
     }
 }
