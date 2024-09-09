@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
