@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,6 +31,7 @@ class CheckoutControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertExactJson(['status' => 'success']);
+        $this->assertEquals(1, Order::query()->count());
     }
 
     #[Test]
