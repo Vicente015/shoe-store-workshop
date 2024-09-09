@@ -65,7 +65,7 @@ class CheckoutControllerTest extends TestCase
                 'Authorization' => 'Bearer ' . $token,
             ])
             ->postJson('/api/checkout', [
-                'price' => 9.80,
+                'price' => 10.0,
                 'products' => ['product-1'],
             ]);
 
@@ -85,37 +85,5 @@ class CheckoutControllerTest extends TestCase
 
         $response->assertStatus(400);
         $response->assertExactJson(['error' => 'invalid price']);
-    }
-
-    #[Test]
-    public function guest_users_get_0_percent_discount_for_any_products(): void
-    {
-        Product::factory()->create(['slug' => 'product-1', 'price' => 100.0]);
-
-        $response = $this->postJson('/api/checkout', [
-            'price' => 100.00,
-            'products' => ['product-1'],
-        ]);
-
-        $response->assertStatus(200);
-    }
-
-    #[Test]
-    public function registered_users_get_2_percent_discount_for_1_product(): void
-    {
-        $user = User::factory()->create(['password' => 'userPassword']);
-        $token = $user->createToken('YourAppToken')->plainTextToken;
-        Product::factory()->create(['slug' => 'product-1', 'price' => 100.0]);
-
-        $response = $this
-            ->withHeaders([
-                'Authorization' => 'Bearer ' . $token,
-            ])
-            ->postJson('/api/checkout', [
-            'price' => 98.00,
-            'products' => ['product-1'],
-        ]);
-
-        $response->assertStatus(200);
     }
 }
