@@ -63,13 +63,8 @@ class CheckoutTest extends TestCase
     #[Test]
     public function registered_users_get_2_percent_discount_for_1_product(): void
     {
-        # TODO: why can't I just create the token and make this work without a login call?
         $user = User::factory()->create(['password' => 'userPassword']);
-        $token = $this->postJson('/api/auth/login', [
-            'email' => $user->email,
-            'password' => 'userPassword',
-        ])->json('token');
-
+        $token = $user->createToken('YourAppToken')->plainTextToken;
         Product::factory()->create(['slug' => 'product-1', 'price' => 100.0]);
 
         $response = $this

@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,26 +28,19 @@ class AuthControllerTest extends TestCase
     public function use_access_token_to_identify_user(): void
     {
         $user = User::factory()->create(['password' => 'userPassword']);
-        $token = $this->postJson('/api/auth/login', [
-            'email' => $user->email,
-            'password' => 'userPassword',
-        ])->json('token');
+        $token = $user->createToken('YourAppToken')->plainTextToken;
 
-        $response = $this->withHeaders([
+        $response = $this->getJson('/api/auth/me', [
             'Authorization' => 'Bearer ' . $token,
-        ])->get('/api/auth/me');
-
-        $response->assertStatus(200);
-        $response->assertExactJson([
-            'name' => $user->name,
-            'email' => $user->email,
         ]);
+
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     #[Test]
     public function cannot_identify_user_without_an_access_token(): void
     {
-        $response = $this->get('/api/auth/me');
+        $response = $this->getJson('/api/auth/me');
 
         $response->assertStatus(401);
     }

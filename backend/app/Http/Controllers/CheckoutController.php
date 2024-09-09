@@ -34,15 +34,16 @@ class CheckoutController extends Controller
 
     private function validatePrice(float $submitted_price, array $products): bool
     {
-        $expected_price = array_sum(array_map(fn ($p) => $p->price, $products));
-        $discounted_price = $this->applyDiscount($expected_price, count($products));
+        $price_sum_of_all_products = array_sum(array_map(fn ($p) => $p->price, $products));
+        $discounted_price = $this->applyDiscount($price_sum_of_all_products, count($products));
 
         return $discounted_price === $submitted_price;
     }
 
     private function applyDiscount(float|int $expected_price, int $amount_of_products)
     {
-        if (!Auth::check()) {
+        $user = Auth::guard('sanctum')->user();
+        if (!$user) {
             return $expected_price;
         }
 

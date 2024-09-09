@@ -20,18 +20,18 @@ class AuthenticationController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('YourAppToken')->accessToken;
+        $token = $user->createToken('YourAppToken');
 
-        return response()->json(['token' => $token->token]);
+        return response()->json(['token' => $token->plainTextToken]);
     }
 
     public function userInfo(): JsonResponse
     {
-        if (!Auth::check()) {
+        $user = Auth::guard('sanctum')->user();
+
+        if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        $user = Auth::user();
 
         return response()->json([
             'name' => $user->name,
