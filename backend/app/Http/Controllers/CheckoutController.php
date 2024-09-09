@@ -21,10 +21,8 @@ class CheckoutController extends Controller
             ], 400);
         }
 
-        $order = Order::create([
-            'user_id' => null,
-            'price' => $price,
-        ]);
+        $order = Order::create(['price' => $price]);
+        $order->user()->associate($this->getUser())->save();
         $order->products()->saveMany($products);
 
         return new JsonResponse(['status' => 'success']);
@@ -39,6 +37,10 @@ class CheckoutController extends Controller
         return $products;
     }
 
+    private function getUser() {
+        return Auth::guard('sanctum')->user();
+    }
+
     private function validatePrice(float $submitted_price, array $products): bool
     {
         $price_sum_of_all_products = array_sum(array_map(fn ($p) => $p->price, $products));
@@ -49,7 +51,7 @@ class CheckoutController extends Controller
 
     private function applyDiscount(float|int $expected_price, int $amount_of_products)
     {
-        $user = Auth::guard('sanctum')->user();
+        $user = $this->getUser();
         if (!$user) {
             return $expected_price;
         }

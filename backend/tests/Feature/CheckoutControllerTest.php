@@ -54,6 +54,26 @@ class CheckoutControllerTest extends TestCase
     }
 
     #[Test]
+    public function check_order_created_for_registered_user(): void
+    {
+        $user = User::factory()->create(['password' => 'userPassword']);
+        $token = $user->createToken('YourAppToken')->plainTextToken;
+        Product::factory()->create(['slug' => 'product-1', 'price' => 10.0]);
+
+        $this
+            ->withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])
+            ->postJson('/api/checkout', [
+                'price' => 9.80,
+                'products' => ['product-1'],
+            ]);
+
+        $order = Order::all()->first();
+        $this->assertEquals($order->user->id, $user->id);
+    }
+
+    #[Test]
     public function checkout_cart_with_wrong_price(): void
     {
         Product::factory()->create(['slug' => 'product-1', 'price' => 20.0]);
