@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\Builders\UserBuilder;
 use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
@@ -20,6 +21,8 @@ class CheckoutControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->userBuilder = new UserBuilder();
 
         app()->bind(PaymentApiClient::class, function () {
             $paymentApiMock = $this->mock(PaymentApiClient::class);
@@ -117,11 +120,7 @@ class CheckoutControllerTest extends TestCase
             'price' => 100,
             'image' => 'https://picsum.photos/201/300',
         ]);
-        $user = User::create([
-            'email' => 'example@example.com',
-            'name' => 'Test User',
-            'password' => Hash::make('password'),
-        ]);
+        $user = $this->userBuilder->create();
         $token = $user->createToken('Personal Access Token')->plainTextToken;
 
         $response = $this
@@ -146,7 +145,7 @@ class CheckoutControllerTest extends TestCase
                 ['name' => 'Panama Jack', 'price' => 50],
             )
             ->create();
-        $user = User::factory()->create();
+        $user = $this->userBuilder->create();
         $token = $user->createToken('Personal Access Token')->plainTextToken;
 
         $response = $this
