@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -135,10 +136,11 @@ class CheckoutControllerTest extends TestCase
     }
 
     #[Test]
-    public function registered_user_gets_5_percent_discount_when_purchasing_2_product(): void
+    #[DataProvider(methodName: "discounts_for_registered_users")]
+    public function registered_user_gets_X_percent_discount_when_purchasing_N_product(int $product_count, float $expected_price): void
     {
-        Product::factory()
-            ->count(2)
+        $products = Product::factory()
+            ->count($product_count)
             ->sequence(
                 ['name' => 'Nike Zoom', 'price' => 50],
                 ['name' => 'Panama Jack', 'price' => 50],
@@ -150,11 +152,19 @@ class CheckoutControllerTest extends TestCase
         $response = $this
             ->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/checkout', [
-            'price' => 95,
-            'products' => ['nike-zoom', 'panama-jack'],
+            'price' => $expected_price,
+            'products' => $products->map(fn ($p) => $p->slug),
             'email' => 'example@example.com',
         ]);
 
         $response->assertStatus(200);
+    }
+
+    public static function discounts_for_registered_users()
+    {
+        return [
+            [1, 49],
+            [2, 95],
+        ];
     }
 }
