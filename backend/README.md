@@ -16,6 +16,26 @@ Run the test suite
 
     make test
 
+
+## Try the endpoints
+
+List products:
+
+```
+curl -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     http://localhost/api
+```
+
+Checkout a cart:
+```
+curl -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -X POST \
+     http://localhost/api/checkout \
+     --data '{"email": "user@codium.team", "price": 100, "products": ["example-product"]}'
+```
+
 # Workshop steps
 
  - Write integration tests to cover at least the happy path of the checkout controller.

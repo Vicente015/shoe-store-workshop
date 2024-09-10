@@ -3,7 +3,7 @@ setup:
 	composer install
 	cp .env.example .env
 	$(MAKE) up
-	./vendor/bin/sail artisan migrate -n
+	./vendor/bin/sail artisan migrate -n --seed
 
 .PHONY: test
 test:
