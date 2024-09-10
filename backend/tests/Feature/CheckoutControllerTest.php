@@ -16,11 +16,11 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_as_anonymous_user(): void
     {
-        $prodcut_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = $this->createExampleProduct();
 
         $response = $this->postJson('/api/checkout', [
-            'price' => $prodcut_to_purchase->price,
-            'products' => [$prodcut_to_purchase->slug],
+            'price' => $product_to_purchase->price,
+            'products' => [$product_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
@@ -30,11 +30,11 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_creates_an_order(): void
     {
-        $prodcut_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = $this->createExampleProduct();
 
         $this->postJson('/api/checkout', [
-            'price' => $prodcut_to_purchase->price,
-            'products' => [$prodcut_to_purchase->slug],
+            'price' => $product_to_purchase->price,
+            'products' => [$product_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
@@ -43,18 +43,18 @@ class CheckoutControllerTest extends TestCase
         $this->assertEquals($order->user, null);
         $this->assertEquals($order->price, 50);
         $this->assertCount(1, $order->products);
-        $this->assertTrue($order->products[0]->is($prodcut_to_purchase));
+        $this->assertTrue($order->products[0]->is($product_to_purchase));
     }
 
     #[Test]
     public function test_checkout_sends_an_email(): void
     {
         Mail::fake();
-        $prodcut_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = $this->createExampleProduct();
 
         $this->postJson('/api/checkout', [
-            'price' => $prodcut_to_purchase->price,
-            'products' => [$prodcut_to_purchase->slug],
+            'price' => $product_to_purchase->price,
+            'products' => [$product_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
