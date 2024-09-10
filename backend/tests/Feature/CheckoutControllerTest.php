@@ -16,15 +16,11 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_as_anonymous_user(): void
     {
-        Product::create([
-            'name' => 'Nike Zoom',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ])->save();
+        $prodcut_to_purchase = $this->createExampleProduct();
 
         $response = $this->postJson('/api/checkout', [
-            'price' => 50.0,
-            'products' => ['nike-zoom'],
+            'price' => $prodcut_to_purchase->price,
+            'products' => [$prodcut_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
@@ -34,16 +30,11 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_creates_an_order(): void
     {
-        $prodcut_to_purchase = Product::create([
-            'name' => 'Nike Zoom',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ]);
-        $prodcut_to_purchase->save();
+        $prodcut_to_purchase = $this->createExampleProduct();
 
         $this->postJson('/api/checkout', [
-            'price' => 50.0,
-            'products' => ['nike-zoom'],
+            'price' => $prodcut_to_purchase->price,
+            'products' => [$prodcut_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
@@ -59,18 +50,25 @@ class CheckoutControllerTest extends TestCase
     public function test_checkout_sends_an_email(): void
     {
         Mail::fake();
-        Product::create([
-            'name' => 'Nike Zoom',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ])->save();
+        $prodcut_to_purchase = $this->createExampleProduct();
 
         $this->postJson('/api/checkout', [
-            'price' => 50.0,
-            'products' => ['nike-zoom'],
+            'price' => $prodcut_to_purchase->price,
+            'products' => [$prodcut_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
 
         Mail::assertSentCount(1);
+    }
+
+    public function createExampleProduct(): Product
+    {
+        $product = Product::create([
+            'name' => 'Nike Zoom',
+            'price' => 50,
+            'image' => 'https://picsum.photos/201/300',
+        ]);
+        $product->save();
+        return $product;
     }
 }
