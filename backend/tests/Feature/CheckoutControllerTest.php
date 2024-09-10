@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Acme\PaymentGateway\PaymentApiClient;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,6 +13,15 @@ use Tests\TestCase;
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->paymentApiMock = $this->mock(PaymentApiClient::class);
+        $this->paymentApiMock->shouldReceive('setAmount')->andReturn($this->paymentApiMock);
+        $this->paymentApiMock->shouldReceive('charge')->andReturn(true);
+        app()->bind(PaymentApiClient::class, fn () => $this->paymentApiMock);
+    }
 
     #[Test]
     public function test_checkout_as_anonymous_user(): void
