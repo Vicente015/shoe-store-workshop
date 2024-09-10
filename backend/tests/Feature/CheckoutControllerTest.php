@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\PaymentApiClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,6 +13,15 @@ use Tests\TestCase;
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->paymentApiMock = $this->mock(PaymentApiClient::class);
+        $this->paymentApiMock->shouldReceive('setAmount')->andReturn($this->paymentApiMock);
+        $this->paymentApiMock->shouldReceive('charge')->andReturn(true);
+        app()->bind(PaymentApiClient::class, fn () => $this->paymentApiMock);
+    }
 
     #[Test]
     public function test_checkout_as_anonymous_user(): void
