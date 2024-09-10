@@ -57,6 +57,24 @@ class CheckoutController extends Controller
     private function validatePrice(float $submitted_price, array $products): bool
     {
         $price_sum_of_all_products = array_sum(array_map(fn ($p) => (float) $p->price, $products));
-        return $price_sum_of_all_products === $submitted_price;
+        $price_adjusted_for_user = $this->calculateDiscountForUser($price_sum_of_all_products, count($products));
+        return $price_adjusted_for_user === $submitted_price;
+    }
+
+    private function calculateDiscountForUser(float $price, int $amount_of_products): float
+    {
+        if (!$this->getUser()) {
+            return $price;
+        }
+
+        switch ($amount_of_products) {
+            case 1:
+                $discount = 0.98;
+                break;
+            default:
+                $discount = 1;
+        }
+
+        return $price * $discount;
     }
 }

@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use Acme\PaymentGateway\PaymentApiClient;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -104,6 +106,32 @@ class CheckoutControllerTest extends TestCase
             'products' => [$product_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
+    }
+
+    #[Test]
+    public function registered_user_gets_2_percent_discount_when_purchasing_1_product(): void
+    {
+        Product::create([
+            'name' => 'Nike Zoom',
+            'price' => 100,
+            'image' => 'https://picsum.photos/201/300',
+        ]);
+        $user = User::create([
+            'email' => 'example@example.com',
+            'name' => 'Test User',
+            'password' => Hash::make('password'),
+        ]);
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
+
+        $response = $this
+            ->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson('/api/checkout', [
+            'price' => 98,
+            'products' => ['nike-zoom'],
+            'email' => 'example@example.com',
+        ]);
+
+        $response->assertStatus(200);
     }
 
     public function createExampleProduct(): Product
