@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
-use App\Services\PaymentApiClient;
 use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
