@@ -7,9 +7,14 @@ use App\Models\Order;
 
 class PaymentService
 {
-    public function payOrder(Order $order): void
-    {
-        (new PaymentApiClient(config('payment.api_key')))
+    private PaymentApiClient $api;
+
+    public function __construct(PaymentApiClient $api) {
+        $this->api = $api;
+    }
+
+    public function payOrder(Order $order): void {
+        $this->api
             ->setAmount($order->price)
             ->charge();
     }
