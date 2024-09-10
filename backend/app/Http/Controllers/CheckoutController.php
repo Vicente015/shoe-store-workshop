@@ -6,6 +6,7 @@ use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\PaymentApiClient;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
-    public function execute(Request $request): JsonResponse
+    public function execute(Request $request, PaymentService $paymentService): JsonResponse
     {
         $params = $request->validate([
             'price' => 'required|numeric',
@@ -35,9 +36,7 @@ class CheckoutController extends Controller
         $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
 
-        (new PaymentApiClient(config('payment.api_key')))
-            ->setAmount($price)
-            ->charge();
+        $paymentService->payOrder($order);
 
         Mail::to($params['email'])->send(new OrderCreated($order));
 
