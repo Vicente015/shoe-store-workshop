@@ -45,3 +45,5 @@ curl -H "Accept: application/json" \
    - run tests and make sure everything is okay
    - replace payment gateway with a test collaborator
    - enjoy faster tests
+ - Write a self-validating test for the Payment API
+   - before this, we would have to rely on checking the sandbox environment to see if payments where correct
