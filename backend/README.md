@@ -40,3 +40,8 @@ curl -H "Accept: application/json" \
 
  - Write integration tests to cover at least the happy path of the checkout controller.
    - (we have to be safe here, this brings the money to our simulated business)
+ - Make changes to controller to improve testing
+   - extract payment gateway logic to a service
+   - run tests and make sure everything is okay
+   - replace payment gateway with a test collaborator
+   - enjoy faster tests
