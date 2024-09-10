@@ -17,10 +17,18 @@ class CheckoutControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->paymentApiMock = $this->mock(PaymentApiClient::class);
-        $this->paymentApiMock->shouldReceive('setAmount')->andReturn($this->paymentApiMock);
-        $this->paymentApiMock->shouldReceive('charge')->andReturn(true);
-        app()->bind(PaymentApiClient::class, fn () => $this->paymentApiMock);
+
+        app()->bind(PaymentApiClient::class, function () {
+            $paymentApiMock = $this->mock(PaymentApiClient::class);
+            $paymentApiMock
+                ->shouldReceive('setAmount')
+                ->andReturnSelf();
+            $paymentApiMock
+                ->shouldReceive('charge')
+                ->andReturn(true);
+
+            return $paymentApiMock;
+        });
     }
 
     #[Test]
@@ -69,6 +77,33 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         Mail::assertSentCount(1);
+    }
+
+    #[Test]
+    public function test_checkout_charges_money_from_customer(): void
+    {
+        Mail::fake();
+        $product_to_purchase = $this->createExampleProduct();
+        app()->bind(PaymentApiClient::class, function () {
+            $paymentApiMock = $this->mock(PaymentApiClient::class);
+            $paymentApiMock
+                ->shouldReceive('setAmount')
+                ->with(50.0)
+                ->andReturnSelf()
+                ->once();
+            $paymentApiMock
+                ->shouldReceive('charge')
+                ->andReturn(true)
+                ->once();
+
+            return $paymentApiMock;
+        });
+
+        $this->postJson('/api/checkout', [
+            'price' => $product_to_purchase->price,
+            'products' => [$product_to_purchase->slug],
+            'email' => 'example@example.com',
+        ]);
     }
 
     public function createExampleProduct(): Product
