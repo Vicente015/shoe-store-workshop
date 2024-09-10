@@ -36,7 +36,7 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_as_anonymous_user(): void
     {
-        $product_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = Product::factory()->create();
 
         $response = $this->postJson('/api/checkout', [
             'price' => $product_to_purchase->price,
@@ -50,10 +50,10 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function test_checkout_creates_an_order(): void
     {
-        $product_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = Product::factory()->create(['price' => 50]);
 
         $this->postJson('/api/checkout', [
-            'price' => $product_to_purchase->price,
+            'price' => 50,
             'products' => [$product_to_purchase->slug],
             'email' => 'example@example.com',
         ]);
@@ -70,7 +70,7 @@ class CheckoutControllerTest extends TestCase
     public function test_checkout_sends_an_email(): void
     {
         Mail::fake();
-        $product_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = Product::factory()->create();
 
         $this->postJson('/api/checkout', [
             'price' => $product_to_purchase->price,
@@ -85,7 +85,7 @@ class CheckoutControllerTest extends TestCase
     public function test_checkout_charges_money_from_customer(): void
     {
         Mail::fake();
-        $product_to_purchase = $this->createExampleProduct();
+        $product_to_purchase = Product::factory()->create(['price' => 50]);
         app()->bind(PaymentApiClient::class, function () {
             $paymentApiMock = $this->mock(PaymentApiClient::class);
             $paymentApiMock
@@ -156,16 +156,5 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-    }
-
-    public function createExampleProduct(): Product
-    {
-        $product = Product::create([
-            'name' => 'Nike Zoom',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ]);
-        $product->save();
-        return $product;
     }
 }
