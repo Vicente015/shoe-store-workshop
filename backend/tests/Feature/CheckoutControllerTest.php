@@ -134,36 +134,30 @@ class CheckoutControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public static function discounts_for_registered_users(): array
+    {
+        return [
+            ['numberOfProducts' => 1, 'discount' => 2],
+            ['numberOfProducts' => 2, 'discount' => 5],
+        ];
+    }
+
     #[Test]
     #[DataProvider(methodName: "discounts_for_registered_users")]
-    public function registered_user_gets_X_percent_discount_when_purchasing_N_product(int $product_count, float $expected_price): void
+    public function registered_user_gets_X_percent_discount_when_purchasing_N_product(int $numberOfProducts, float $discount): void
     {
-        $products = Product::factory()
-            ->count($product_count)
-            ->sequence(
-                ['name' => 'Nike Zoom', 'price' => 50],
-                ['name' => 'Panama Jack', 'price' => 50],
-            )
-            ->create();
+        $products = Product::factory()->count($numberOfProducts)->create(['price' => 50]);
         $user = $this->userBuilder->create();
         $token = $user->createToken('Personal Access Token')->plainTextToken;
 
         $response = $this
             ->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/checkout', [
-            'price' => $expected_price,
+            'price' => $numberOfProducts * 50 * (100-$discount) / 100,
             'products' => $products->map(fn ($p) => $p->slug),
             'email' => 'example@example.com',
         ]);
 
         $response->assertStatus(200);
-    }
-
-    public static function discounts_for_registered_users()
-    {
-        return [
-            [1, 49],
-            [2, 95],
-        ];
     }
 }
