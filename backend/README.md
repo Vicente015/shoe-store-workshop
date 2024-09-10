@@ -47,3 +47,4 @@ curl -H "Accept: application/json" \
    - enjoy faster tests
  - Write a self-validating test for the Payment API
    - before this, we would have to rely on checking the sandbox environment to see if payments where correct
+ - Implement discounts for registered users following TDD

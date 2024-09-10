@@ -71,6 +71,9 @@ class CheckoutController extends Controller
             case 1:
                 $discount = 0.98;
                 break;
+            case 2:
+                $discount = 0.95;
+                break;
             default:
                 $discount = 1;
         }
