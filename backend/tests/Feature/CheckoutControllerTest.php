@@ -137,21 +137,14 @@ class CheckoutControllerTest extends TestCase
     #[Test]
     public function registered_user_gets_5_percent_discount_when_purchasing_2_product(): void
     {
-        Product::create([
-            'name' => 'Nike Zoom',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ]);
-        Product::create([
-            'name' => 'Panama Jack',
-            'price' => 50,
-            'image' => 'https://picsum.photos/201/300',
-        ]);
-        $user = User::create([
-            'email' => 'example@example.com',
-            'name' => 'Test User',
-            'password' => Hash::make('password'),
-        ]);
+        Product::factory()
+            ->count(2)
+            ->sequence(
+                ['name' => 'Nike Zoom', 'price' => 50],
+                ['name' => 'Panama Jack', 'price' => 50],
+            )
+            ->create();
+        $user = User::factory()->create();
         $token = $user->createToken('Personal Access Token')->plainTextToken;
 
         $response = $this
