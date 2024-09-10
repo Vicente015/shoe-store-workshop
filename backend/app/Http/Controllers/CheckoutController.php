@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\PaymentApiClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,10 @@ class CheckoutController extends Controller
         $order = Order::create(['price' => $price]);
         $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
+
+        (new PaymentApiClient(config('payment.api_key')))
+            ->setAmount($price)
+            ->charge();
 
         Mail::to($params['email'])->send(new OrderCreated($order));
 
