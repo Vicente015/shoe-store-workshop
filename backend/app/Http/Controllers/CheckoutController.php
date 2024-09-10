@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
     public function execute(Request $request): JsonResponse
     {
-        $products = $this->getProductsFromCart($request);
-        $price = $request->input('price', 0);
+        $params = $request->validate([
+            'price' => 'required|numeric',
+            'products' => 'required|array',
+            'email' => 'required|email',
+        ]);
+
+        $products = $this->getProductsFromCart($params['products']);
+        $price = $params['price'];
 
         if (!$this->validatePrice($price, $products)) {
             return new JsonResponse([
@@ -21,20 +29,22 @@ class CheckoutController extends Controller
             ], 400);
         }
 
+        $user = $this->getUser();
         $order = Order::create(['price' => $price]);
-        $order->user()->associate($this->getUser())->save();
+        $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
+
+        Mail::to($params['email'])->send(new OrderCreated($order));
 
         return new JsonResponse(['status' => 'success']);
     }
 
-    public function getProductsFromCart(Request $request): array
+    public function getProductsFromCart($product_slugs): array
     {
-        $products = [];
-        foreach ($request->json('products', []) as $slug) {
-            $products[] = Product::where('slug', $slug)->firstOrFail();
-        }
-        return $products;
+        return array_map(
+            fn ($slug) => Product::where('slug', $slug)->firstOrFail(),
+            $product_slugs
+        );
     }
 
     private function getUser() {

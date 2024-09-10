@@ -13,6 +13,8 @@ class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    const CUSTOMER_EMAIL = 'example@example.com';
+
     #[Test]
     public function checkout_cart_success(): void
     {
@@ -27,6 +29,7 @@ class CheckoutControllerTest extends TestCase
         $response = $this->postJson('/api/checkout', [
             'price' => 30.00,
             'products' => ['product-1', 'product-2'],
+            'email' => self::CUSTOMER_EMAIL,
         ]);
 
         $response->assertStatus(200);
@@ -43,6 +46,7 @@ class CheckoutControllerTest extends TestCase
         $this->postJson('/api/checkout', [
             'price' => 10.00,
             'products' => ['product-1'],
+            'email' => self::CUSTOMER_EMAIL,
         ]);
 
         $this->assertEquals(1, Order::query()->count());
@@ -67,6 +71,7 @@ class CheckoutControllerTest extends TestCase
             ->postJson('/api/checkout', [
                 'price' => 10.0,
                 'products' => ['product-1'],
+                'email' => self::CUSTOMER_EMAIL,
             ]);
 
         $order = Order::all()->first();
@@ -81,6 +86,7 @@ class CheckoutControllerTest extends TestCase
         $response = $this->postJson('/api/checkout', [
             'price' => 5.00,
             'products' => ['product-1'],
+            'email' => self::CUSTOMER_EMAIL,
         ]);
 
         $response->assertStatus(400);
