@@ -1,6 +1,8 @@
+UID=$(shell id -u)
+
 .PHONY: setup
 setup:
-	docker run --rm -v ${PWD}:/code -w /code composer:2.2.24 install
+	docker run --rm -u "$(UID):$(UID)" -v ${PWD}:/code -w /code composer:2.2.24 install
 	cp .env.example .env
 	$(MAKE) up
 	./vendor/bin/sail artisan key:generate
@@ -17,3 +19,9 @@ up:
 .PHONY: down
 down:
 	./vendor/bin/sail down
+
+.PHONY: clean
+clean:
+	./vendor/bin/sail down -v
+	rm .env
+	rm -rf vendor
