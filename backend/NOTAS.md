@@ -23,7 +23,7 @@ explicar los fakes de Mail
 
 ```php
     Mail::fake()
-    Mail::expectSentCount()
+    Mail::assertSentCount()
 ```
 
 explicar la inyección de dependencias:
