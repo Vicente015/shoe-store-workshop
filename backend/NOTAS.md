@@ -5,6 +5,16 @@ explicar la api del cliente de test:
 ```php
     $this->get('/')->expectStatus(200);
 ```
+
+petición autenticada:
+
+```php
+$user = User::create(['name' => 'John', 'email' => '', 'password' => '']);
+$token = $user->createToken('api token')->plainTextToken;
+$this
+    ->withHeader('Authorization', 'Bearer ' . $token)
+    ->get('/');
+```
  
 explicar uso básico del ORM 
 
