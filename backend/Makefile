@@ -23,5 +23,5 @@ down:
 .PHONY: clean
 clean:
 	./vendor/bin/sail down -v
-	rm .env
+	rm -f .env
 	rm -rf vendor
