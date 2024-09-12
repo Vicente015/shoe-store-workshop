@@ -18,6 +18,7 @@ class Product extends Model
     protected $primaryKey = 'uuid';
     public $timestamps = false;
 
+    public $fillable = ['name', 'price', 'image'];
     protected $attributes = [
         'name' => '',
         'slug' => '',
