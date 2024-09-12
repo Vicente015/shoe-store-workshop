@@ -3,6 +3,7 @@ setup:
 	docker run --rm -v ${PWD}:/code -w /code composer:2.2.24 install
 	cp .env.example .env
 	$(MAKE) up
+	./vendor/bin/sail artisan key:generate
 	./vendor/bin/sail artisan migrate -n --seed
 
 .PHONY: test
