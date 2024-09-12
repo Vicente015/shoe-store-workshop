@@ -27,6 +27,20 @@ class PaymentApiClient
             throw new \Exception("Payment error, unable to charge");
         }
 
+        $this->logOperationSuccess($this->amount);
+
         return true;
+    }
+
+    /**
+     * Save the operation into a log, if this was a real API we would look
+     * into the sandbox/test environment and see the transactions there.
+     */
+    private function logOperationSuccess(float $amount)
+    {
+        file_put_contents(
+            storage_path('logs/payment-api.log'),
+            date("Y-m-d H:i:s") . " charged amount {$amount}\n",
+            FILE_APPEND);
     }
 }
