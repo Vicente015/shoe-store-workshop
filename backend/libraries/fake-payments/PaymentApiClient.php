@@ -23,7 +23,7 @@ class PaymentApiClient
     public function charge(): bool {
         sleep(2);
 
-        if (rand(1,10) == 1) {
+        if (rand(1,20) == 1) {
             throw new \Exception("Payment error, unable to charge");
         }
 
