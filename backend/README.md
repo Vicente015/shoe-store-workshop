@@ -63,12 +63,6 @@ We want to make changes to avoid contacting an external API while running tests,
  - Mock the ApiClient to speed-up tests
  - Update your tests, check the payment is done correctly
 
- - **Demo time**, things that can go wrong:
-   - What happens if we need to inject params to the api client?
-     - show tests and production
-     - create a service provider to enable the injection
-   - mocked API chainable 
-
 ### 3rd part
 
  - Add discount for registered users purchasing 1 item
