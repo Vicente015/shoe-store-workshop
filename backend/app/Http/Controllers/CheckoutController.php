@@ -35,7 +35,7 @@ class CheckoutController extends Controller
         $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
 
-        (new PaymentApiClient(config('payment.api_key')))
+        (new PaymentApiClient())
             ->setAmount($price)
             ->charge();
 
