@@ -1,4 +1,12 @@
 # Cheatsheet para los alumnos
+
+Usar la base de datos en los tests:
+
+```php
+class MyTest extends \Tests\TestCase {
+    use RefreshDatabase; // Add this line, remember to import the class from Illuminate\Foundation\Testing\RefreshDatabase
+}
+```
  
 Realizar peticiones con el cliente de test:
 
