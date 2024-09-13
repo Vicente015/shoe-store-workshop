@@ -61,7 +61,7 @@ class CheckoutController extends Controller {
         // 
     }
 }
-
+```
 
 Podemos instruir al framework a inyectar un mock en lugar de la implementación real:
 
@@ -73,16 +73,29 @@ Podemos instruir al framework a inyectar un mock en lugar de la implementación 
     $this->mock(PaymentApiClient::class);
 ```
 
-Podemos configurar los mocks para hacer verificaciones:
+Podemos configurar los mocks para hacer verificaciones.
+
+La diferencia entre mock y spy es cómo lo usamos.
+ - en mock primero definimos la interfaz y expectativas de antemano, despues lo ejecutamos
+ - spy nos permite comprobar a posteriori, despues de ejecutar
 
 ```php
-    $paymentApiMock = $this->mock(PaymentApiClient::class);
-    $paymentApiMock
+    /*
+     * con Mock
+     */
+    $mockedClass = $this->mock(PaymentApiClient::class);
+    $mockedClass
         ->shouldReceive('setAmount')
         ->with(20) // check expected arguments
         ->once();  // expected number of calls
-    $paymentApiMock
-        ->shouldReceive('charge')
-        ->andReturn(true)
+    // then run code that uses the mock
+
+    /*
+     * con Spy
+     */
+    $spiedClass = $this->spy(PaymentApiClient::class);
+    // run code that uses the spy
+    $spiedClass
+        ->shouldHaveReceive('methodName', [])
         ->once();
 ```
