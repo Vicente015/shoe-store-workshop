@@ -42,7 +42,10 @@ curl -H "Accept: application/json" \
 
  - Write a tests to cover the **happy path** of the checkout controller
    - *we have to be safe here, this brings the money to our simulated business*
-   - don't forget to check: that an order is created, an email is sent 
+   - don't forget to check:
+     - that an order is created
+     - an email is sent
+     - the API response
  - Write a test for the **price validation**, a user cannot pay less than the expected price
  - Create a test builder (Laravel calls it "model factories") to refactor the tests and remove duplication
 
