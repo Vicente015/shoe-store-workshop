@@ -41,6 +41,8 @@ curl -H "Accept: application/json" \
 Depending on the speed at which the group advances some topics will not be hands-on (the ones marked as **_extra_**), instead
 the trainer will solve these entries in front of the class while explaining everything.
 
+To reduce friction with Laravel, you can use the [Cheat sheet](./CHEAT_SHEET.md)
+
 ### 1st part
 
  - Write a tests to cover the **happy path** of the checkout controller
