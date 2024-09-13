@@ -38,24 +38,34 @@ curl -H "Accept: application/json" \
 
 # Workshop steps
 
+Depending on the speed at which the group advances some topics will not be hands-on (the ones marked as **_extra_**), instead
+the trainer will solve these entries in front of the class while explaining everything.
+
 ### 1st part
 
  - Write a tests to cover the **happy path** of the checkout controller
    - *we have to be safe here, this brings the money to our simulated business*
    - don't forget to check:
-     - that an order is created
-     - an email is sent
      - the API response
- - Write a test for the **price validation**, a user cannot pay less than the expected price
- - Create a test builder (Laravel calls it "model factories") to refactor the tests and remove duplication
+     - **_extra_** that an order is created
+     - **_extra_** an email is sent
+ - **_extra_** Write a test for the **price validation**, a user cannot pay less than the expected price
+ - **_extra_** Create a test builder (Laravel calls it "model factories") to refactor the tests and remove duplication
 
 ### 2nd part
 
+The tests are running slow because we are using the production API client for the payment gateway, and it has slow responses.
+We want to make changes to avoid contacting an external API while running tests, this makes our tests faster and more reliable, we can even run them offline.
+
  - Refactor the controller to inject the ApiClient
- - Why does it fail the tests now?
- - Create a service provider to enable the injection
  - Mock the ApiClient to speed-up tests
- - Update your tests or add a new one to check the payment is done correctly
+ - Update your tests, check the payment is done correctly
+
+ - **Demo time**, things that can go wrong:
+   - What happens if we need to inject params to the api client?
+     - show tests and production
+     - create a service provider to enable the injection
+   - mocked API chainable 
 
 ### 3rd part
 

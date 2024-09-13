@@ -62,55 +62,27 @@ class CheckoutController extends Controller {
     }
 }
 
-// in service provider
-class AppServiceProvider extends ServiceProvider
-{
-    public function register(): void
-    {
-        /*
-         * Cuando el framework no sabe construir un objeto para inyectar usando inferencia
-         * podemos configurar una factoría que indique como debe construir el objeto.
-         * 
-         * También podemos hacerlo si el objeto creado por inferencia no tiene las propiedades que deseamos.  
-         */
-        $this->app->singleton(ServiceType::class, function () {
-            return new ServiceClass(/* required params here */);
-        });
-    }
-}
-```
 
 Podemos instruir al framework a inyectar un mock en lugar de la implementación real:
 
 ```php
-    app()->bind(PaymentApiClient::class, function () {
-        $paymentApiMock = $this->mock(PaymentApiClient::class);
-        $paymentApiMock
-            ->shouldReceive('setAmount')
-            ->andReturnSelf();
-        $paymentApiMock
-            ->shouldReceive('charge')
-            ->andReturn(true);
-
-        return $paymentApiMock;
-    });
+    $this->spy(PaymentApiClient::class);
+    
+    // or
+    
+    $this->mock(PaymentApiClient::class);
 ```
 
 Podemos configurar los mocks para hacer verificaciones:
 
 ```php
-    app()->bind(PaymentApiClient::class, function () {
-        $paymentApiMock = $this->mock(PaymentApiClient::class);
-        $paymentApiMock
-            ->shouldReceive('setAmount')
-            ->with(20) // check expected arguments
-            ->andReturnSelf()
-            ->once();  // expected number of calls
-        $paymentApiMock
-            ->shouldReceive('charge')
-            ->andReturn(true)
-            ->once();
-
-        return $paymentApiMock;
-    });
+    $paymentApiMock = $this->mock(PaymentApiClient::class);
+    $paymentApiMock
+        ->shouldReceive('setAmount')
+        ->with(20) // check expected arguments
+        ->once();  // expected number of calls
+    $paymentApiMock
+        ->shouldReceive('charge')
+        ->andReturn(true)
+        ->once();
 ```
