@@ -6,7 +6,7 @@ setup:
 	cp .env.example .env
 	$(MAKE) up
 	./vendor/bin/sail artisan key:generate
-	./vendor/bin/sail artisan migrate -n --seed
+	./vendor/bin/sail artisan migrate:refresh -n --seed
 
 .PHONY: test
 test:
