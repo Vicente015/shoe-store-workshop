@@ -35,9 +35,9 @@ class CheckoutController extends Controller
         $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
 
-        (new PaymentApiClient())
-            ->setAmount($price)
-            ->charge();
+        $paymentApiClient = new PaymentApiClient();
+        $paymentApiClient->setAmount($price);
+        $paymentApiClient->charge();
 
         Mail::to($params['email'])->send(new OrderCreated($order));
 
