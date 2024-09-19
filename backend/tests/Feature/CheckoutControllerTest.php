@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Acme\PaymentGateway\PaymentApiClient;
 use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
@@ -13,6 +14,12 @@ use Tests\TestCase;
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->spy(PaymentApiClient::class);
+    }
 
     #[Test]
     public function checkout_success(): void
@@ -50,5 +57,24 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertEquals(400, $response->status(), $response->getContent());
         $this->assertEquals(0, Order::count());
+    }
+
+    #[Test]
+    public function payment_gateway_performs_charge(): void
+    {
+        Product::create(['name' => 'example', 'price' => 100]);
+        $spy = $this->spy(PaymentApiClient::class);
+
+        $this->postJson('/api/checkout', [
+            'email' => 'example@example.com',
+            'products' => ['example'],
+            'price' => 100,
+        ]);
+
+
+        $spy
+            ->shouldHaveReceived('setAmount', [100])
+            ->once();
+        $spy->shouldHaveReceived('charge');
     }
 }

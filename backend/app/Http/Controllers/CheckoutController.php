@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
-    public function execute(Request $request): JsonResponse
+    public function execute(Request $request, PaymentApiClient $paymentApiClient): JsonResponse
     {
         $params = $request->validate([
             'price' => 'required|numeric',
@@ -34,8 +34,7 @@ class CheckoutController extends Controller
         $order = Order::create(['price' => $price]);
         $order->user()->associate($user)->save();
         $order->products()->saveMany($products);
-
-        $paymentApiClient = new PaymentApiClient();
+        
         $paymentApiClient->setAmount($price);
         $paymentApiClient->charge();
 
