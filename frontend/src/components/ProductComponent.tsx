@@ -10,7 +10,7 @@ export function ProductComponent({
 }) {
   return (
     <div className='flex items-center justify-center'>
-      <article className='max-w-sm w-full bg-white rounded-lg shadow-lg overflow-hidden dark:bg-gray-700'>
+      <article className='max-w-sm w-full bg-white rounded-lg shadow-lg overflow-hidden'>
         <div>
           <img
             className='object-cover h-64 w-full'
@@ -20,10 +20,10 @@ export function ProductComponent({
         </div>
 
         <div className='flex flex-col gap-1 mt-4 px-4'>
-          <h2 className='text-lg font-semibold text-gray-800 dark:text-gray-50'>
+          <h2 className='text-lg font-semibold text-gray-800'>
             {product.name}
           </h2>
-          <span className='font-normal text-gray-600 dark:text-gray-300'>
+          <span className='font-normal text-gray-600'>
             Lorem ipsum dolor sit, amet consectetur adipisicing, elit. Eos,
             voluptatum dolorum...
           </span>
@@ -33,7 +33,7 @@ export function ProductComponent({
           <a
             type='button'
             href={`/product/${slugify(product.name)}`}
-            className='text-gray-900 bg-white hover:opacity-85 focus:ring-4 font-medium rounded-lg text-sm py-2.5 text-right inline-flex items-center dark:focus:ring-gray-600 justify-end dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2'
+            className='text-gray-900 bg-white hover:opacity-85 focus:ring-4 font-medium rounded-lg text-sm py-2.5 text-right inline-flex items-center justify-end me-2 mb-2'
           >
             <span className={'mr-2'}>View</span>
             <svg
@@ -53,7 +53,7 @@ export function ProductComponent({
           </a>
         </div>
 
-        <div className='mt-4 p-4 border-t flex items-center justify-center content-center border-gray-200 dark:border-gray-500'>
+        <div className='mt-4 p-4 border-t flex items-center justify-center content-center border-gray-200'>
           <button
             onClick={addProduct}
             type='button'

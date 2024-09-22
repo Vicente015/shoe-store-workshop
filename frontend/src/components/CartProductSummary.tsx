@@ -19,9 +19,9 @@ export function CartProductSummary({ product }: { product: Product }) {
         role='status'
         className='space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center'
       >
-        <div className='flex items-center justify-center w-full h-24 bg-gray-300 rounded sm:w-36 dark:bg-gray-700'>
+        <div className='flex items-center justify-center w-full h-24 bg-gray-300 rounded sm:w-36'>
           <svg
-            className='w-6 h-6 text-gray-200 dark:text-gray-600'
+            className='w-6 h-6 text-gray-200'
             aria-hidden='true'
             xmlns='http://www.w3.org/2000/svg'
             fill='currentColor'
@@ -32,9 +32,9 @@ export function CartProductSummary({ product }: { product: Product }) {
         </div>
         <div className='w-full'>
           <div className='h-2.5 bg-white rounded-full w-48 mb-4'></div>
-          <div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5'></div>
-          <div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[110px] mb-2.5'></div>
-          <div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[110px] mb-2.5'></div>
+          <div className='h-2 bg-gray-200 rounded-full max-w-[480px] mb-2.5'></div>
+          <div className='h-2 bg-gray-200 rounded-full max-w-[110px] mb-2.5'></div>
+          <div className='h-2 bg-gray-200 rounded-full max-w-[110px] mb-2.5'></div>
         </div>
       </div>
     );
@@ -57,7 +57,7 @@ export function CartProductSummary({ product }: { product: Product }) {
       <form className='max-w-sm mx-auto'>
         <label
           htmlFor='countries'
-          className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+          className='block mb-2 text-sm font-medium text-gray-900'
         >
           Quantity
         </label>
@@ -65,7 +65,7 @@ export function CartProductSummary({ product }: { product: Product }) {
           defaultValue={quantity}
           onChange={handleQuantityChangeEvent}
           id='countries'
-          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
         >
           <option value={1}>1</option>
           <option value={2}>2</option>
