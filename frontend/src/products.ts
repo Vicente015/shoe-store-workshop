@@ -72,7 +72,7 @@ export async function reserveProducts() {
 }
 
 export async function addProductsToCart(products: Array<Product>) {
-  await sleep(200);
+  await sleep(10);
   console.log('Products: ', products);
 }
 
