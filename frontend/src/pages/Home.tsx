@@ -54,7 +54,7 @@ export function HomePage() {
               <div className='grid grid-cols-5 grid-rows-4 gap-4 md:w-5/12 lg:w-6/12'>
                 <div className='col-span-2 row-span-4'>
                   <img
-                    src='https://tailus.io/sources/blocks/ecommerce-site/preview/images/products/kushagra.webp'
+                    src='/images/kushagra.webp'
                     className='rounded-full'
                     width='640'
                     height='960'
@@ -64,7 +64,7 @@ export function HomePage() {
                 </div>
                 <div className='col-span-2 row-span-2'>
                   <img
-                    src='https://tailus.io/sources/blocks/ecommerce-site/preview/images/products/iman.webp'
+                    src='/images/iman.webp'
                     className='w-full h-full object-cover object-top rounded-xl'
                     width='640'
                     height='640'
@@ -74,7 +74,7 @@ export function HomePage() {
                 </div>
                 <div className='col-span-3 row-span-3'>
                   <img
-                    src='https://tailus.io/sources/blocks/ecommerce-site/preview/images/products/daniel.webp'
+                    src='/images/daniel.webp'
                     className='w-full h-full object-cover object-top rounded-xl'
                     width='640'
                     height='427'
@@ -123,7 +123,7 @@ export function HomePage() {
               <h3 className='text-3xl font-bold mb-8'>TOP Product</h3>
               <div className='relative'>
                 <img
-                  src='https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                  src='/images/photo-1606107557195-0e29a4b5b4aa.avif'
                   className='w-full relative z-10'
                   alt=''
                 />

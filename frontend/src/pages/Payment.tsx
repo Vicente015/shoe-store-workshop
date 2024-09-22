@@ -186,19 +186,11 @@ export function PaymentPage() {
                 </div>
 
                 <div className='mt-6 flex items-center justify-center gap-8'>
+                  <img className='h-8 w-auto' src='/images/paypal.svg' alt='' />
+                  <img className='h-8 w-auto' src='/images/visa.svg' alt='' />
                   <img
                     className='h-8 w-auto'
-                    src='https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg'
-                    alt=''
-                  />
-                  <img
-                    className='h-8 w-auto'
-                    src='https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg'
-                    alt=''
-                  />
-                  <img
-                    className='h-8 w-auto'
-                    src='https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg'
+                    src='/images/mastercard.svg'
                     alt=''
                   />
                 </div>
