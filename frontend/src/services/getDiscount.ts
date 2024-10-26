@@ -56,3 +56,6 @@ export function getDiscount(
 
   return discount;
 }
+
+export const calculateTotalWithDiscount = (discount: number, total: number) =>
+  Math.abs((discount * total) / 100 - total);

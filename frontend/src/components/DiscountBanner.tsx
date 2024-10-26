@@ -1,7 +1,5 @@
-import { Product } from '../products.ts';
 import { UserType } from '../models/UserType.ts';
 import {
-  getDiscount,
   MAX_REGISTER_DISCOUNT,
   MAX_VIP_DISCOUNT,
 } from '../services/getDiscount.ts';
@@ -128,14 +126,12 @@ function GuestDiscountBanner({ discount }: { discount: number }) {
 }
 
 export function DiscountBanner({
-  products,
+  discount,
   userType,
 }: {
-  products: Array<Product>;
+  discount: number;
   userType: UserType;
 }) {
-  const discount = getDiscount(products, userType);
-
   if (UserType.isVip(userType)) {
     return <DiscountVipBanner discount={discount} />;
   } else if (UserType.isRegister(userType)) {
