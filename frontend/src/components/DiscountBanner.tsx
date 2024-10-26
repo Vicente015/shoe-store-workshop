@@ -1,23 +1,34 @@
 import { Product } from '../products.ts';
 
-export function DiscountBanner({
-  products,
-  userType,
-}: {
-  products: Array<Product>;
-  userType: 'VIP' | 'register' | 'guest';
-}) {
-  let totalQuantity = 0;
-  let tmpDiscount = 0;
-  let discount = 0;
-  const MAX_REGISTER_DISCOUNT = 10;
-  const MAX_VIP_DISCOUNT = 25;
-  for (let index = 0; index < products.length; index++) {
-    totalQuantity += products[index].quantity;
+type UserType = 'VIP' | 'register' | 'guest';
+
+const NO_DISCOUNT = 0;
+
+const MAX_REGISTER_DISCOUNT = 10;
+const MAX_VIP_DISCOUNT = 25;
+const EXTRA_VIP_DISCOUNT = 5;
+
+const calculateDiscount = (
+  userType: UserType,
+  totalQuantity: number
+): number => {
+  if (userType === 'guest') return NO_DISCOUNT;
+
+  if (userType === 'register') {
+    switch (totalQuantity) {
+      case 1:
+        return 2;
+      case 2:
+        return 5;
+
+      default:
+        return MAX_REGISTER_DISCOUNT;
+    }
   }
 
   if (userType === 'VIP') {
-    let result = 0;
+    let result: number;
+
     switch (totalQuantity) {
       case 0:
         result = 0;
@@ -32,11 +43,28 @@ export function DiscountBanner({
         result = 20;
         break;
     }
-    tmpDiscount = result;
-    if (totalQuantity) {
-      tmpDiscount += 5; // VIP customers get an additional 5% discount
-    }
-    discount = tmpDiscount;
+
+    result += EXTRA_VIP_DISCOUNT;
+    return result;
+  }
+
+  return NO_DISCOUNT;
+};
+
+export function DiscountBanner({
+  products,
+  userType,
+}: {
+  products: Array<Product>;
+  userType: UserType;
+}) {
+  let totalQuantity = 0;
+  let discount = calculateDiscount(userType, totalQuantity);
+  for (let index = 0; index < products.length; index++) {
+    totalQuantity += products[index].quantity;
+  }
+
+  if (userType === 'VIP') {
     return (
       <div className='bg-indigo-900 text-center py-4 lg:px-4 mb-4'>
         <div
@@ -62,25 +90,6 @@ export function DiscountBanner({
       </div>
     );
   } else if (userType === 'register') {
-    let discountPercent = 0;
-    if (totalQuantity <= 3) {
-      if (totalQuantity === 1) {
-        discountPercent = 2;
-      } else if (totalQuantity === 2) {
-        discountPercent = 5;
-      } else if (totalQuantity === 3) {
-        discountPercent = MAX_REGISTER_DISCOUNT;
-      }
-      if (totalQuantity) {
-        discount = discountPercent;
-      }
-    } else {
-      discountPercent = MAX_REGISTER_DISCOUNT;
-      if (totalQuantity) {
-        discount = discountPercent;
-      }
-    }
-
     return (
       <div className='bg-gradient-to-r  from-purple-600 to-blue-600 font-[sans-serif] p-6 mb-5'>
         <div className='container mx-auto flex flex-col justify-center items-center'>
